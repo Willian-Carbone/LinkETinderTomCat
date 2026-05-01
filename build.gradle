@@ -1,0 +1,56 @@
+plugins {
+    id 'groovy'
+    id 'war'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+group = 'br.com.williancarbone'
+version = '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+
+
+
+    implementation 'org.apache.groovy:groovy:4.0.12'
+
+    implementation 'org.apache.groovy:groovy-all:4.0.12'
+    implementation 'org.postgresql:postgresql:42.7.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-4.0")
+    testImplementation "org.spockframework:spock-core"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+    testImplementation 'com.h2database:h2:2.2.224'
+}
+
+tasks.register('deployTomcat', Copy) {
+    dependsOn war
+    from war.archiveFile
+    into "/opt/tomcat/webapps"
+    rename { 'link-tinder.war' }
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+
