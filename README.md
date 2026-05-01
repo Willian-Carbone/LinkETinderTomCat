@@ -30,7 +30,7 @@ A aplicação foi estruturada seguindo padrões  de desenvolvimento :
 | `GET` | `/candidatos` | Lista candidatos ou busca individual via ID. |
 | `POST` | `/candidatos` | Cria um novo perfil de candidato. |
 
-### 🏢 Empresas
+### Empresas
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` | `/empresas` | Cadastra uma nova empresa no sistema. |
