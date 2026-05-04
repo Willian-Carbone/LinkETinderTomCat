@@ -7,6 +7,7 @@ import br.com.williancarbone.dao.interfaces.PerfilDao
 import br.com.williancarbone.exceptions.CredencialDuplicadaException
 import br.com.williancarbone.exceptions.DadoNaoEncontado
 import br.com.williancarbone.exceptions.DadoNaoInformado
+import br.com.williancarbone.exceptions.DadoRepetido
 import br.com.williancarbone.model.objetos.Candidato
 import br.com.williancarbone.model.objetos.Curtida
 import groovy.sql.GroovyRowResult
@@ -197,21 +198,27 @@ class CandidatoDao extends BaseDao implements Matchable, CurtidaDao, PerfilDao<C
 
     @Override
     Integer salvarCurtida(Curtida curtida) {
-
-            if(!curtida){
-                throw new DadoNaoInformado("iformações sobre a curtida faltante")
-
-            }
+        if (!curtida || !curtida.cpf || !curtida.idVaga) {
+            throw new DadoNaoInformado("Informações sobre a curtida estão faltando (CPF ou ID da Vaga)")
+        }
 
 
-            List<List<Object>> insercao = sql.executeInsert "INSERT INTO curtida (vaga,candidato) VALUES (?,?)", [curtida.idVaga, curtida.cpf]
+        GroovyRowResult registroExistente = sql.firstRow(
+                "SELECT 1 FROM curtida WHERE candidato = ? AND vaga = ?",
+                [curtida.cpf, curtida.idVaga]
+        )
 
-            Integer idGerado = insercao[0][0] as Integer
+        if (registroExistente) {
+            throw new DadoRepetido("Você já curtiu essa vaga")
+        }
 
-            return idGerado
+        List<List<Object>> insercao = sql.executeInsert(
+                "INSERT INTO curtida (vaga, candidato) VALUES (?, ?)",
+                [curtida.idVaga, curtida.cpf]
+        )
 
 
-
+        return insercao[0][0] as Integer
     }
 
     @Override

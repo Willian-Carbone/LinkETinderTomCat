@@ -27,7 +27,7 @@ A aplicação foi estruturada seguindo padrões  de desenvolvimento :
 ###  Candidatos
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
-| `GET` | `/candidatos` | Lista candidatos ou busca individual via ID. |
+| `GET` | `/candidatos` | Lista candidatos . |
 | `POST` | `/candidatos` | Cria um novo perfil de candidato. |
 
 ### Empresas
@@ -43,6 +43,13 @@ A aplicação foi estruturada seguindo padrões  de desenvolvimento :
 | `DELETE` | `/vagas?cnpj=...&vaga=...`           | Remove uma vaga específica de uma empresa. |
 |`GET`|  `/vagas?credenciais= ...cpf/cnpj...`| lista vagas para o perfil selecionado|
 
+
+### Curtida
+| Método | Endpoint                             | Descrição                                  |
+| :--- |:-------------------------------------|:-------------------------------------------|
+| `POST` | `/curtida`                           | Publica uma nova curtida em vaga.          |
+
+
 ---
 
 ## Tratamento de Erros Padronizado
@@ -53,9 +60,10 @@ A API utiliza códigos de status HTTP semânticos
 | :--- | :--- | :--- |
 | `400` | **Bad Request** | Dados ausentes ou formato de número inválido. |
 | `404` | **Not Found** | Recurso (Empresa/Vaga) não localizado. |
-| `409` | **Conflict** | Tentativa de duplicar um registro único. |
+| `409` | **Conflict** | Tentativa de duplicar um registro . |
 | `422` | **Unprocessable Content** | Violação de regra de negócio (ex: Credencial duplicada). |
 | `503` | **Service Unavailable** | Banco de dados offline ou erro de conexão. |
+
 
 **Exemplo de Resposta de Erro:**
 ```json

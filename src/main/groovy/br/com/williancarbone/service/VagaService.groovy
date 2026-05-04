@@ -50,11 +50,11 @@ class VagaService {
         boolean remocao=false
 
 
-        List vagasDaEmpresa = empresaDao.buscarVagas(cnpj)
+        List vagasDaEmpresa = empresaDao.buscarVagas(TextConversorUtil.removerNaoDigitos(cnpj))
 
         vagasDaEmpresa.each {
-            if(it.id ==idVaga) {
-                vagaDao.removerVaga(it.id as Integer)
+            if(it.id_vaga ==idVaga) {
+                vagaDao.removerVaga(it.id_vaga as Integer)
                 remocao = true
             }
 
