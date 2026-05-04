@@ -50,6 +50,13 @@ A aplicação foi estruturada seguindo padrões  de desenvolvimento :
 | `POST` | `/curtida`                           | Publica uma nova curtida em vaga.          |
 
 
+
+### Match
+| Método | Endpoint | Descrição                |
+| :--- |:---------|:-------------------------|
+| `POST` | `/match` | registra um match em vaga|
+
+
 ---
 
 ## Tratamento de Erros Padronizado

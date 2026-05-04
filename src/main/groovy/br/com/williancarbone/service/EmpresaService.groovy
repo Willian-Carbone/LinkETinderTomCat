@@ -126,12 +126,24 @@ class EmpresaService extends ServicePerfilBase implements BuscadorInfo{
 
 
 
-            String cpf = candidatoDao.capturarCpfPorId(matchInfo.idCandidato as Integer)
+        String cpf = candidatoDao.capturarCpfPorId(matchInfo.idCandidato as Integer)
 
-            if(!cpf){throw  new DadoNaoEncontado("Não a candidatos com o id informado ")}
+        if(!cpf){throw  new DadoNaoEncontado("Não a candidatos com o id informado ")}
 
-            Match match = new Match(cpf,cnpjFormatado,matchInfo.idVaga as Integer)
-            empresaDao.criarMatch(match)
+       List<Map> vagasRegistardas= empresaDao.buscarVagas(cnpjFormatado)
+
+        boolean vagaExistente = false
+
+        vagasRegistardas.each {
+            if(it["id_vaga"]=matchInfo.idVaga){
+                vagaExistente=true
+            }
+        }
+
+        if(!vagaExistente) {throw new DadoNaoEncontado("a empresa informada não possui esta vaga")}
+
+        Match match = new Match(cpf,cnpjFormatado,matchInfo.idVaga as Integer)
+        empresaDao.criarMatch(match)
 
 
 

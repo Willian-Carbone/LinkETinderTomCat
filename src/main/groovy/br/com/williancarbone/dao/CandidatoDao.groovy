@@ -227,8 +227,9 @@ class CandidatoDao extends BaseDao implements Matchable, CurtidaDao, PerfilDao<C
     }
 
     String capturarCpfPorId(Integer id){
-       String cpf = sql.firstRow("SELECT cpf FROM candidato where candidato_id=${id}")[0]
+        GroovyRowResult resultado = sql.firstRow("SELECT cpf FROM candidato WHERE candidato_id = ?", [id])
 
-        return cpf
+        return resultado?.cpf
+
     }
 }
