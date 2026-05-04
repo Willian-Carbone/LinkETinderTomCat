@@ -16,13 +16,13 @@ import jakarta.servlet.http.HttpServletResponse
 
 import java.sql.SQLException
 
-@WebServlet ("/empresas")
+@WebServlet("/empresas")
 
-class EmpresaControler extends HttpServlet implements FeedbackBuilder{
+class EmpresaControler extends HttpServlet implements FeedbackBuilder {
 
 
     private final ObjectMapper mapper = new ObjectMapper()
-    private final EmpresaService empresaService= new EmpresaService( new ConexaoPostGresBase())
+    private final EmpresaService empresaService = new EmpresaService(new ConexaoPostGresBase())
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -33,7 +33,10 @@ class EmpresaControler extends HttpServlet implements FeedbackBuilder{
 
             Map<String, Object> mapaDosDados = mapper.readValue(req.getInputStream(), Map.class)
 
+
+
             empresaService.criarPerfil(mapaDosDados)
+
 
             resp.setStatus(HttpServletResponse.SC_CREATED)
             Map<String, Object> okBody = [mensagem: "Empresa criada com sucesso"]
@@ -45,13 +48,13 @@ class EmpresaControler extends HttpServlet implements FeedbackBuilder{
 
         }
 
-        catch (FalhaCriacaoConexao e){
+        catch (FalhaCriacaoConexao e) {
 
             enviarErro(resp, e.getMessage(), HttpServletResponse.SC_SERVICE_UNAVAILABLE)
 
         }
 
-        catch (CredencialDuplicadaException e){
+        catch (CredencialDuplicadaException e) {
             enviarErro(resp, e.getMessage(), HttpServletResponse.SC_UNPROCESSABLE_CONTENT)
         }
 
@@ -61,19 +64,17 @@ class EmpresaControler extends HttpServlet implements FeedbackBuilder{
     }
 
 
-
-
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setContentType("application/json")
         resp.setCharacterEncoding("UTF-8")
 
-        try{
+        try {
 
-            String cnpj=req.getParameter("cnpj")
+            String cnpj = req.getParameter("cnpj")
 
-            if(cnpj == null){
+            if (cnpj == null) {
                 throw new DadoNaoInformado("Para remover uma empresa , informe seu cnpj na url")
             }
 
@@ -85,21 +86,19 @@ class EmpresaControler extends HttpServlet implements FeedbackBuilder{
 
 
         }
-        catch (DadoNaoInformado e){
+        catch (DadoNaoInformado e) {
 
             enviarErro(resp, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST)
 
         }
 
-        catch (DadoNaoEncontado e){
+        catch (DadoNaoEncontado e) {
             enviarErro(resp, e.getMessage(), HttpServletResponse.SC_NOT_FOUND)
 
         }
 
 
     }
-
-
 
 
 }

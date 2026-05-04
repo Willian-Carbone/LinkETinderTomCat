@@ -6,8 +6,9 @@ import br.com.williancarbone.infra.conexoes.CriadorConexao
 
 class ServicePerfilBase {
 
-    UsuarioDao usuarioDao
+
     CriadorConexao criadorConexao
+    UsuarioDao usuarioDao
 
 
     ServicePerfilBase(CriadorConexao criadorConexao){

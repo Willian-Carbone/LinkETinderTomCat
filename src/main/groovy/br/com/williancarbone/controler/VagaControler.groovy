@@ -7,7 +7,10 @@ import br.com.williancarbone.exceptions.DadoNaoInformado
 import br.com.williancarbone.exceptions.FalhaCriacaoConexao
 import br.com.williancarbone.infra.FeedbackBuilder
 import br.com.williancarbone.infra.conexoes.ConexaoPostGresBase
+import br.com.williancarbone.service.Base.BuscadorInfo
+import br.com.williancarbone.service.Factory.BuscadorInfoFactory
 import br.com.williancarbone.service.VagaService
+import br.com.williancarbone.util.TextConversorUtil
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServlet
@@ -22,6 +25,8 @@ class VagaControler extends HttpServlet implements FeedbackBuilder{
 
     private final ObjectMapper mapper = new ObjectMapper()
     private final VagaService vagaService = new VagaService( new ConexaoPostGresBase())
+    private final  ServicePerfilBaseFactory = new BuscadorInfoFactory(new ConexaoPostGresBase())
+
 
 
     @Override
@@ -96,6 +101,50 @@ class VagaControler extends HttpServlet implements FeedbackBuilder{
         catch (NumberFormatException ignored){
             enviarErro(resp, "Insira um valor numerico ao id da vaga", HttpServletResponse.SC_BAD_REQUEST)
         }
+
+
+    }
+
+    @Override
+
+    protected void doGet( HttpServletRequest req,HttpServletResponse resp){
+
+        try {
+
+            String identificador = req.getParameter("credencial")
+            if(!identificador){
+                throw new DadoNaoInformado("Para ver as vagas , informe sua credencial cnpj ou cpf")
+            }
+
+            BuscadorInfo servico = ServicePerfilBaseFactory.FabricarServico(identificador)
+
+            List<Map> vagasCapturadas = servico.buscarVagasParaOPerfil(identificador)
+
+            mapper.writeValue(resp.writer, vagasCapturadas)
+
+
+
+
+
+        }
+
+
+
+        catch (DadoNaoInformado e){
+
+            enviarErro(resp, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST)
+
+        }
+
+        catch (DadoNaoEncontado e){
+            enviarErro(resp,e.getMessage(),HttpServletResponse.SC_NOT_FOUND)
+        }
+
+
+
+
+
+
 
 
     }

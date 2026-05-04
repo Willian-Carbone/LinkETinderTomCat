@@ -10,13 +10,14 @@ import br.com.williancarbone.model.enuns.Estado
 import br.com.williancarbone.model.objetos.Candidato
 import br.com.williancarbone.model.objetos.Curtida
 import br.com.williancarbone.model.objetos.EspecialidadeUsuario
+import br.com.williancarbone.service.Base.BuscadorInfo
 import br.com.williancarbone.service.Base.ServicePerfilBase
 
 
 import br.com.williancarbone.util.TextConversorUtil
 
 
-class CandidatoService extends ServicePerfilBase {
+class CandidatoService extends ServicePerfilBase implements BuscadorInfo{
 
     CandidatoDao candidatoDao
 
@@ -69,7 +70,7 @@ class CandidatoService extends ServicePerfilBase {
     }
 
 
-
+    @Override
     Map capturarInfosDoPerfil(String cpf) {
 
         if(!cpf){throw new DadoNaoInformado("Cpf para busca não informado")}
@@ -80,7 +81,7 @@ class CandidatoService extends ServicePerfilBase {
 
     }
 
-
+    @Override
     Integer capturarIdPerfil(String cpf) {
 
         if(!cpf){throw new DadoNaoInformado("Cpf para busca não informado")}
@@ -89,14 +90,14 @@ class CandidatoService extends ServicePerfilBase {
 
     }
 
-
+    @Override
     List<Map> buscarVagasParaOPerfil(String cpf) {
         if(!cpf){throw new DadoNaoInformado("Cpf para busca não informado")}
 
         candidatoDao.buscarVagas(TextConversorUtil.removerNaoDigitos(cpf))
     }
 
-
+    @Override
     List<Map> buscarMatchsParaOPerfil(String cpf) {
         if(!cpf){throw new DadoNaoInformado("Cpf para busca não informado")}
 

@@ -1,11 +1,7 @@
 package br.com.williancarbone.ValidadoresEntrada.facades
 
-import br.com.williancarbone.ValidadoresEntrada.ValidadorCep
-import br.com.williancarbone.ValidadoresEntrada.ValidadorEmail
-import br.com.williancarbone.ValidadoresEntrada.ValidadorEspecialidade
-import br.com.williancarbone.ValidadoresEntrada.ValidadorEstado
+
 import br.com.williancarbone.ValidadoresEntrada.ValidadorI
-import br.com.williancarbone.ValidadoresEntrada.ValidadorNome
 import br.com.williancarbone.ValidadoresEntrada.factory.ValidadorFactory
 import br.com.williancarbone.exceptions.DadoInvalido
 import br.com.williancarbone.exceptions.DadoNaoInformado

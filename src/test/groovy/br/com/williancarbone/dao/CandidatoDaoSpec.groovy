@@ -181,7 +181,7 @@ class CandidatoDaoSpec extends BaseSpec {
         then:
         resultado.size() == 1
         resultado[0].nome == "V2"
-        resultado[0].cnpj_empresa == "12345678901235"
+
 
     }
 

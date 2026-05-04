@@ -133,12 +133,38 @@ class EmpresaDao extends BaseDao implements PerfilDao<Empresa,String>, Matchable
             throw new DadoNaoInformado("dado cnpj não informado")
         }
 
-        List<GroovyRowResult> vagas = sql.rows "SELECT * FROM vaga WHERE contratante=${cnpj}"
+        String sqlBusca = """
+        SELECT 
+            v.id AS id_vaga, 
+            v.nome AS nome_vaga, 
+            v.descricao AS descricao_vaga,
+            c.candidato_id AS id_candidato,
+            STRING_AGG(e.nome, ', ') AS competencias_candidato
+        FROM vaga v
+        LEFT JOIN curtida cur ON v.id = cur.vaga
+        LEFT JOIN candidato c ON cur.candidato = c.cpf
+        LEFT JOIN especialidade_usuario eu ON c.candidato_id = eu.usuario
+        LEFT JOIN especialidade e ON eu.especialidade = e.sigla
+        WHERE v.contratante = ?
+        GROUP BY v.id, v.nome, v.descricao, c.candidato_id, c.cpf
+        ORDER BY v.id
+        """
+        List<Map> infos = sql.rows(sqlBusca, [cnpj])
 
+        List<LinkedHashMap> vagasAgrupadas = infos.groupBy { it.id_vaga }.collect { idVaga, registros ->
+            Map primeiraLinha = registros[0]
+            return [
+                    id_vaga       : idVaga,
+                    nome_vaga     : primeiraLinha.nome_vaga,
+                    descricao_vaga: primeiraLinha.descricao_vaga,
 
+                    interessados  : registros.collect {
+                        it.id_candidato ? [id: it.id_candidato, habilidades: it.competencias_candidato] : null
+                    }.findAll { it != null }
+            ]
+        }
 
-        return vagas
-
+        return vagasAgrupadas
     }
 
 

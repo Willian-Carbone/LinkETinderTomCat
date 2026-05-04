@@ -37,10 +37,11 @@ A aplicação foi estruturada seguindo padrões  de desenvolvimento :
 | `DELETE` | `/empresas?cnpj=...` | Remove uma empresa permanentemente via CNPJ. |
 
 ### Vagas
-| Método | Endpoint | Descrição |
-| :--- | :--- | :--- |
-| `POST` | `/vagas` | Publica uma nova oportunidade de emprego. |
-| `DELETE` | `/vagas?cnpj=...&vaga=...` | Remove uma vaga específica de uma empresa. |
+| Método | Endpoint                             | Descrição |
+| :--- |:-------------------------------------| :--- |
+| `POST` | `/vagas`                             | Publica uma nova oportunidade de emprego. |
+| `DELETE` | `/vagas?cnpj=...&vaga=...`           | Remove uma vaga específica de uma empresa. |
+|`GET`|  `/vagas?credenciais= ...cpf/cnpj...`| lista vagas para o perfil selecionado|
 
 ---
 

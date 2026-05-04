@@ -142,8 +142,10 @@ class CandidatoDao extends BaseDao implements Matchable, CurtidaDao, PerfilDao<C
             throw new DadoNaoInformado("dado cpf não informado")
         }
 
+        if(!sql.firstRow("SELECT 1 FROM candidato WHERE cpf = ?", [cpf])) {throw new DadoNaoEncontado("Candidato nao existe")}
+
         String buscaVagas = """
-            SELECT v.id AS id_vaga, v.nome, v.descricao,  u.id AS id_contratante,e.cnpj AS cnpj_empresa,STRING_AGG(ev.especialidade, ', ') AS competencias
+            SELECT v.id AS id_vaga, v.nome, v.descricao,STRING_AGG(ev.especialidade, ', ') AS competencias
             FROM vaga v JOIN  empresa e ON v.contratante = e.cnpj
             JOIN  usuario u ON e.empresa_id = u.id
             LEFT JOIN especialidade_vaga ev ON v.id = ev.vaga
@@ -175,6 +177,8 @@ class CandidatoDao extends BaseDao implements Matchable, CurtidaDao, PerfilDao<C
         if (!cpf) {
             throw new DadoNaoInformado("dado cpf não informado")
         }
+
+
 
         String buscaMatchs = """
             SELECT u.nome, u.descricao, u.email, emp.pais, u.estado, m.vaga

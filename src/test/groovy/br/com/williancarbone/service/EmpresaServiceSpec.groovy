@@ -180,7 +180,7 @@ class EmpresaServiceSpec extends BaseSpec {
         then:
 
         resultadosObtidos.size()==1
-        resultadosObtidos[0].contratante=="12345678901234"
+        resultadosObtidos[0].id_vaga==1
 
     }
 

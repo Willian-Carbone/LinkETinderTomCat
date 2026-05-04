@@ -13,10 +13,11 @@ import br.com.williancarbone.model.objetos.Empresa
 import br.com.williancarbone.model.objetos.EspecialidadeUsuario
 import br.com.williancarbone.model.objetos.Match
 import br.com.williancarbone.service.Base.ServicePerfilBase
+import br.com.williancarbone.service.Base.BuscadorInfo
 import br.com.williancarbone.util.TextConversorUtil
 
 
-class EmpresaService extends ServicePerfilBase{
+class EmpresaService extends ServicePerfilBase implements BuscadorInfo{
 
     EmpresaDao empresaDao
     CandidatoDao candidatoDao
@@ -34,6 +35,8 @@ class EmpresaService extends ServicePerfilBase{
 
 
     Integer criarPerfil(Map info) {
+
+
 
         validadorDados.validarDadosParaRegistroEmpresa(info)
 
@@ -75,8 +78,7 @@ class EmpresaService extends ServicePerfilBase{
     }
 
 
-
-
+    @Override
     Map capturarInfosDoPerfil(String cnpj) {
 
         if(!cnpj){throw new DadoNaoInformado("cnpj para busca não informado")}
@@ -89,7 +91,7 @@ class EmpresaService extends ServicePerfilBase{
 
     }
 
-
+    @Override
     Integer capturarIdPerfil(String cnpj) {
 
         if(!cnpj){throw new DadoNaoInformado("Cnpj para busca não informado")}
@@ -98,14 +100,14 @@ class EmpresaService extends ServicePerfilBase{
 
     }
 
-
+    @Override
     List<Map> buscarVagasParaOPerfil(String cnpj) {
         if(!cnpj){throw new DadoNaoInformado("cnpj para busca não informado")}
 
         empresaDao.buscarVagas(TextConversorUtil.removerNaoDigitos(cnpj))
     }
 
-
+    @Override
     List<Map> buscarMatchsParaOPerfil(String cnpj) {
         if(!cnpj){throw new DadoNaoInformado("cnpj para busca não informado")}
 
